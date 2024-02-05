@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always
+    volumes:
+      - .:/social_media
+
+  db:
+    image: 'postgres:15.5-bullseye'
+    environment:
+      - POSTGRES_HOST = ${DB_HOST}
+      - POSTGRES_DB = ${DB_NAME}
+      - POSTGRES_USER = ${DB_USER}
+      - POSTGRES_PASSWORD = ${DB_PASS}
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    env_file:
+      - database.env
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local
