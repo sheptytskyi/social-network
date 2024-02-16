@@ -2,12 +2,12 @@ import uuid
 from fastapi import FastAPI
 from fastapi_users import FastAPIUsers
 
-from app import User
+from app import UserModel
 from app.internal.auth import auth_backend
 from app.managers.user import get_user_manager
 from app.schemas.user import UserRead, UserUpdate, UserCreate
 
-fastapi_users = FastAPIUsers[User, uuid.UUID](
+fastapi_users = FastAPIUsers[UserModel, uuid.UUID](
     get_user_manager,
     [auth_backend],
 )
